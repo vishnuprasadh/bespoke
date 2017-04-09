@@ -1,0 +1,52 @@
+[
+{"name":"typeofpromotion",
+"namespace":"bespoke.avro",
+"type":"enum",
+"aliases":["offertype"],
+"symbols": ["moneyoff","percentoff","BOGO","BXGY","orderthreshold","freeshipping","freegift","bundle","others","voucher"]
+},
+{"name":"orderitems",
+  "type":"record",
+  "namespace":"bespoke.avro",
+  "aliases":["lineitem","orderentry","entryid"],
+  "fields":
+  [{"name":"itemid","type":"string","aliases":["productid"]},
+  {"name":"quantity","type":["null","int"],"aliases":["qty","unit"]},
+  {"name":"price","type":["null","double"],"aliases":["unitcost"]},
+  {"name":"itemdiscount","type":["null","double"],"aliases":["discount","promotion"]},
+  {"name":"discounttype","type":["null", "bespoke.avro.typeofpromotion"],"aliases":["promotiontype","promotype","offer"]}
+  ]
+},
+{"name":"order",
+  "type":"record",
+  "namespace":"bespoke.avro",
+  "aliases":["orders"],
+  "fields":
+  [{"name":"appid","type":"int", "default":"1"},
+  {"name":"orderid", "type":"string" },
+  {"name":"orderdate","type":"string"},
+  {"name":"customerid","type":"string"},
+  {"name":"ordervalue","type":"double"},
+  {"name":"orderdiscount","type":["null","double"], "aliases":["discount","totalpromo"]},
+  {"name":"paymode","type":["null","string"]},
+  {"name":"orderpromotion","type":["null","bespoke.avro.typeofpromotion"]},
+  {"name":"lineitems","type":["null",{"type":"array","items":"bespoke.avro.orderitems"}]}
+  ]
+},
+{"name":"promotion",
+"namespace":"bespoke.avro",
+"type":"record",
+"aliases":["promotions","offers"],
+"fields":
+  [
+  {"name":"appid","type":"int", "default":"1"},
+  {"name":"promotionid", "type":"string" },
+  {"name":"promotioname","type":"string"},
+  {"name":"type","type":"bespoke.avro.typeofpromotion"},
+  {"name":"startdate","type":["null","string"]},
+  {"name":"enddate","type":["null","string"]},
+  {"name":"promovalue","type":["null","double"]}
+  ]
+}
+
+]

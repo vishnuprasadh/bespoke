@@ -1,0 +1,112 @@
+[
+{"type":"record",
+    "namespace":"bespoke.avro",
+    "name":"variation",
+    "aliases":["productvariant","variant"],
+    "docs":"A strong typed key, value which we want to use for variation. The id will be the value of variant id and value the name of the product. Value is optional.",
+	"fields":
+    [
+        {"name":"id","type":"string", "aliases":["code","itemid","productid","product"]},
+        {"name":"value","type":["null","string"], "aliases":["description","name","title","details"]}
+   ]
+},
+
+{"type":"enum",
+ "name":"productstatus",
+ "namespace":"bespoke.avro",
+ "docs":"The product status which has values of active(default used), inactive,approved, inprogress,others and rejected.",
+ "symbols":["active","inactive","approved","inprogress","others","rejected"]
+},
+
+{"type":"record",
+"name":"productrating",
+"namespace":"bespoke.avro",
+"aliases":["itemrating","servicerating"],
+"docs":"The average product rating, ratingcount & review count is captured through this schema",
+"fields":
+[
+{"name":"rating","type":"string"},
+{"name":"ratingcount","type":["null","int"]},
+{"name":"reviewcount","type":["null","int"]}
+]
+},
+
+{"type":"record",
+"name":"customerrating",
+"namespace":"bespoke.avro",
+"docs":"The customer rating, helpful and not helpful is captured through this schema",
+"fields":[
+    {"name":"customerid", "type":"string"},
+    {"name":"rating","type":"string"},
+    {"name":"nothelpful","type":["null","string"]},
+    {"name":"helpful","type":["null","string"]}]
+},
+
+
+{"type":"record",
+	"namespace":"bespoke.avro",
+	"name":"product",
+	"aliases":["item","service","plan","deliverable"],
+	"fields":
+		[
+		    {"name":"appId", "type":"int", "default":"1", "docs":"use appid to ensure the same instance can be rolled out to multiple products or applications"},
+		    {"name":"id", "type":"string" ,"aliases":["productid","itemid","item","product"]},
+			{"name":"title","type":["null","string"]},
+			{"name":"brand","type":["null","string"],"docs":"brand can have a key and value"},
+			{"name":"categoryid","type": ["null", {"type":"map","values":"string"}], "aliases":["categoryid","catid"], "docs":"the list of categoryId, categoryName associated, send Id as key, name as value"},
+			{"name":"description","type":["null","string"]},
+			{"name":"keywords","type": ["null", {"type":"array","items":"string"}],"docs":"this helps in long run in long run analysis, send the search keywords used for product"},
+			{"name":"unit", "type":"string", "default":"Each", "aliases":["uom","unittype"] , "docs":"Default used is Each"},
+			{"name":"margin","type":["null","double"], "default":0, "aliases":["pricemargin","profitmargin"], "docs":"Give the margin of profit on product, if not given assumes 0"},
+			{"name":"price","type":["null","double"],"aliases":["cost","costperunit"]},
+			{"name":"url","type":["null","string"],"doc":"URL of the product to return for more details on product, this will be used for event analysis. Provide full url"},
+			{"name":"imageurl","type":["null","string"],"doc":"Image url to display for return values"},
+			{"name":"currency","type":["null","string"],"docs":"currency value for the price"},
+			{"name":"groupid","type":["null","string"],"docs":"if groupid for set of product id is same then when seeking recommendation, provides ability to filter out or otherwise. Hint:Use this in variants by giving baseproduct Id"},
+			{"name":"color","type":["null","bespoke.avro.variation"], "aliases":["primarycolor","colour","colours"] ,"docs":"if incoming data has a attribute color then this field will be mapped with the color value"},
+			{"name":"size","type":["null","bespoke.avro.variation"], "aliases":["weight","sizes","fit"], "docs":"if incoming data has a attribute size then this field will be mapped with the size value"},
+			{"name":"style","type":["null","bespoke.avro.variation"], "aliases":["genre"] ,"docs":"if incoming data has a attribute style or genre then this field will be mapped with the style value"},
+			{"name":"discount","type":["null","double"],"docs":"if incoming data has an attribute discount then this field will be mapped with the discount value"},
+			{"name":"material","type":["null","bespoke.avro.variation"],"aliases":["character","fabrictype","fabric"], "docs":"if incoming data has a attribute material then this field will be mapped with the color value"},
+			{"name":"agerange","type":["null","bespoke.avro.variation"], "aliases":["age","ageband"], "docs":"if incoming data has a attribute age then this field will be mapped with the color value"},
+			{"name":"status","type":["null","bespoke.avro.productstatus"], "default":"active"},
+			{"name":"createddate","type":["null","string"]},
+			{"name":"modifieddate","type":["null","string"]},
+			{"name":"features", "type":["null",{"type":"map", "values":"string"}],"docs":"Pass your features or classification attributes as features in key-value pair"},
+            {"name":"customerratings","type":["null",{"type":"array","items":"bespoke.avro.customerrating"}] ,"docs":"Append the customer rating values here including helpful count. This is of type customerrating."},
+            {"name":"productratings","type":["null",{"type":"array","items":"bespoke.avro.productrating"}]  ,"docs":"Add the product rolled up averagecount value, number of ratings. This is of type productrating." }
+
+
+		]
+}
+,
+{"type":"record",
+"name":"brand",
+"namespace":"bespoke.avro",
+"aliases":["brands","category"],
+"docs":"The brand data or schema which can be used for lookup whenever required. Note that the same schema can be used also for category hence the alias name of category. Only code is mandatory in this schema, if used.",
+"fields":
+ [
+   {"name":"appId", "type":"int", "default":"1", "docs":"use appid to ensure the same instance can be rolled out to multiple products or applications"},
+   {"name":"code","type":"string", "aliases":["categorycode","categoryid","key","brand","id","brandid","catid"]},
+   {"name":"description","type":["null","string"],"aliases":["value","name","categoryname","category","categorydescription","brandname","brandtitle"]},
+   {"name":"url","type":["null","string"]},
+   {"name":"imageurl","type":["null","string"]}
+   ]
+},
+{
+"type":"record",
+"name":"inventory",
+"namespace":"bespoke.avro",
+"aliases":["stock","stocks"],
+"docs":"The schema will be used to review inventory data.",
+"fields":
+ [
+   {"name":"appId", "type":"int", "default":"1", "docs":"use appid to ensure the same instance can be rolled out to multiple products or applications"},
+   {"name":"productid","type":"string", "aliases":["product","key","skuid","sku","item"]},
+   {"name":"inventory","type":["null","string"],"aliases":["stockcount","count","invcount","stock","availability"]},
+   {"name":"lastupdated","type":["null","string"]},
+   {"name":"storeid","type":["null","string"]}
+   ]
+}
+]

@@ -1,0 +1,29 @@
+[
+{"name":"customerrating",
+  "type":"record",
+  "namespace":"bespoke.avro",
+  "aliases":["rating","customerrating","employeerating"],
+  "fields":
+  [
+  {"name":"productid","type":"string","aliases":["id","item","product","delvierable","service"]},
+  {"name":"rating","type":"string"}
+  ]
+},
+{"name":"customer",
+  "type":"record",
+  "namespace":"bespoke.avro",
+  "aliases":["customers","clients","employee"],
+  "fields":
+  [
+  {"name":"appid","type":"int", "default":"1"},
+  {"name":"id","type":"string","aliases":["customerid", "employeeid"]},
+  {"name":"customersince","type":["null","string"],"aliases":["registereddate","createddate"]},
+  {"name":"age","type":["null","float"],"aliases":["years"]},
+  {"name":"gender","type":["null","string"],"aliases":["sex"]},
+  {"name":"region","type":["null","string"],"aliases":["state","location"]},
+  {"name":"pincode","type":["null", "string"],"aliases":["zipcode","zip","pin"]},
+  {"name":"likes","type":["null", {"type":"array","items":"string"}],"aliases":["like","shortlist","myitems"]},
+  {"name":"ratings","type":["null", {"type":"array","items":"bespoke.avro.customerrating"}],"aliases":["ratings","reviews"], "docs":"provide the productid and rating as the values here"}
+  ]
+}
+]

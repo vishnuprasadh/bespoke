@@ -1,0 +1,24 @@
+{
+"product":[{"id": "1",
+	"brand": "bata",
+	"category": [{
+		"shoe": "123"
+	}, {
+		"accessories": "122"
+	}],
+	"groupid": "",
+	"price": 1200.22,
+	"unit": "Each",
+	"unittype": "Each",
+	"updatedtime": "03/03/2017",
+	"currency": "INR",
+	"feature": [{
+		"style": "contemperory"
+	}, {
+		"color": "black"
+	}, {
+		"size": "10"
+	}]}
+]
+
+}
