@@ -32,37 +32,34 @@ a. In case its standalone, just configure the localhost:2181 property in zookeep
     you can copy zookeeper package in three folders e.g. instance 1, instance 2, instance 3. In each of these, zoo.cfg files update clientport=2181, 2182 and 2183 etc as required.
     ii. update the data folder to /data/zk1/, /data/zk2/, /data/zk3/ or whichever path but different from each.
     iii. add following property in all the three zoo.cfg file
-    
-    ```bash
-    server.1=localhost:2888:3888
-    server.2=localhost:2889:3890
-    server.3=localhost:2890:3890
-    ```
-    Here ensure server.1 i.e. 1 is same as the server identifier which you will configure in next step within myid file of the data folder.
-    iv. execute following command in each of these folders and have 1,2,3 as id in the myid file
-    
-    ```bash
+   
+
+
+
+Here ensure server.1 i.e. 1 is same as the server identifier which you will configure in next step within myid file of the data folder. iv. execute following command in each of these folders and have 1,2,3 as id in the myid file
+   
+   
+   
+```bash
     touch myid
     vi my id
     1 # or 2 or 3 depending on zk1, zk2, zk3 folder
     :wq
-    ```
+```
     
-    The above is important since all the feeds/data is going to be saved in the folder under /data/zk1/ and uses the identifer used for server in managing the partition tolerance/replication across servers.
+The above is important since all the feeds/data is going to be saved in the folder under /data/zk1/ and uses the identifer used for server in managing the partition tolerance/replication across servers.
     v. Goto kafka config folder and open server.properties file. Here update zookeeper.connect to localhost:2181
-    vi. Repeat the above by creating copies of server.properties as server-2.properties and server-3.properties. Update the zookeeper.connect to respective zookeeper url i.e. localhost:2181 etc
-    Also ensure brokder id used for each broker i.e. instance of server properties file is unique and configured as in zookeeper properties in section#a above.
+    vi. Repeat the above by creating copies of server.properties as server-2.properties and server-3.properties. Update the zookeeper.connect to respective zookeeper url i.e. localhost:2181 etc. Also ensure brokder id used for each broker i.e. instance of server properties file is unique and configured as in zookeeper properties in section#a above.
 
-
-    ```bash
+```bash
     brokder.id =1
-    ```
+```
     
 Note that you can provide multiple connection urls for zookeeper to ensure high availability , partition tolerance. E.g. to keep simple given localhost below but this could be your IPs of servers in the node which perform zookeeper's cluster management.
     
-    ```bash
+```bash
     zookeeper.connect = localhost:2181,localhost:2182,localhost:2183
-    ```
+```
 
 It is a good practice to store all the log.dirs and datadir in kafka broker and zookeeper on common mounts and providing execute i.e. chmod 755 access.
 
