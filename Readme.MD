@@ -1,18 +1,18 @@
-Process flow:
+<b>Process flow</b>
 
 The premise of this application is to consume the incoming streaming data of feeds through a mix of technology.
 a. Kafka - fault tolerant method of consuming feeds or messages.We can use a series of sinks/source to finally deliver the message to backend
 b. python - used for processing of incoming feed using skilearn, pandas, numpy where datamining happens almost realtime
 c. avro - used for serialization of incoming and outgoing formats to ensure easy modifications/updates going forward
 
-Example flow:
+<b>Example flow:</b>
 
 --> Product feed -->Queue-->Kafka Consumer-->Python Productprocessor-->Kafka Producer --> Python ProductAnalyzer -->Kafka Connect-->Cassandra
 
 In future we may decide to move away from python and probably integrate with a Apache flink framework when we can easily change the python processing framework using Apache flink without disturbing the entire cassandra, kafka and avro framework usage.
 
 
-Steps to execute:
+<b>Steps to execute:</b>
 
 1. Install a few packages as given below in python.
 ```bash
@@ -33,8 +33,11 @@ a. In case its standalone, just configure the localhost:2181 property in zookeep
     ii. update the data folder to /data/zk1/, /data/zk2/, /data/zk3/ or whichever path but different from each.
     iii. add following property in all the three zoo.cfg file
    
-
-
+```bash
+server.1=localhost:2888:3888
+server.2=localhost:2889:3890
+server.3=localhost:2890:3890
+```
 
 Here ensure server.1 i.e. 1 is same as the server identifier which you will configure in next step within myid file of the data folder. iv. execute following command in each of these folders and have 1,2,3 as id in the myid file
    
