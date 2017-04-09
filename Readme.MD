@@ -1,8 +1,11 @@
-<b>Process flow</b>
+<b>Process flow</b> [NOTE: WORK IN PROGRESS, CANT USE IT NOW!]
 
 The premise of this application is to consume the incoming streaming data of feeds through a mix of technology.
+
 a. Kafka - fault tolerant method of consuming feeds or messages.We can use a series of sinks/source to finally deliver the message to backend
+
 b. python - used for processing of incoming feed using skilearn, pandas, numpy where datamining happens almost realtime
+
 c. avro - used for serialization of incoming and outgoing formats to ensure easy modifications/updates going forward
 
 <b>Example flow:</b>
@@ -39,7 +42,9 @@ server.2=localhost:2889:3890
 server.3=localhost:2890:3890
 ```
 
-Here ensure server.1 i.e. 1 is same as the server identifier which you will configure in next step within myid file of the data folder. iv. execute following command in each of these folders and have 1,2,3 as id in the myid file
+Here ensure server.1 i.e. 1 is same as the server identifier which you will configure in next step within myid file of the data folder. 
+
+iv. Execute following command in each of these folders and have 1,2,3 as id in the myid file
    
    
    
@@ -51,8 +56,10 @@ Here ensure server.1 i.e. 1 is same as the server identifier which you will conf
 ```
     
 The above is important since all the feeds/data is going to be saved in the folder under /data/zk1/ and uses the identifer used for server in managing the partition tolerance/replication across servers.
-    v. Goto kafka config folder and open server.properties file. Here update zookeeper.connect to localhost:2181
-    vi. Repeat the above by creating copies of server.properties as server-2.properties and server-3.properties. Update the zookeeper.connect to respective zookeeper url i.e. localhost:2181 etc. Also ensure brokder id used for each broker i.e. instance of server properties file is unique and configured as in zookeeper properties in section#a above.
+
+v. Goto kafka config folder and open server.properties file. Here update zookeeper.connect to localhost:2181
+
+vi. Repeat the above by creating copies of server.properties as server-2.properties and server-3.properties. Update the zookeeper.connect to respective zookeeper url i.e. localhost:2181 etc. Also ensure brokder id used for each broker i.e. instance of server properties file is unique and configured as in zookeeper properties in section#a above.
 
 ```bash
     brokder.id =1
