@@ -1,9 +1,11 @@
 from kafka import KafkaProducer
+from kafka import KafkaConsumer
 from kafka import BrokerConnection
 from kafka.errors import KafkaError
 from kafka.future import Future
+from json import dumps
+import json
 import kafka
-
 import os
 import logging
 from logging.handlers import RotatingFileHandler
@@ -11,6 +13,9 @@ from configparser import ConfigParser
 from enum import Enum,IntFlag,unique
 import time
 import datetime
+from kafka.common import TopicPartition
+
+
 
 class kafkafactory:
     @unique
@@ -22,7 +27,7 @@ class kafkafactory:
         Promotion = 9,
         Category = 11,
         Test = 15
-
+
 
 
 
@@ -125,8 +130,8 @@ class kafkafactory:
 
             localtime = time.localtime()
             epochtime = time.mktime(localtime)
-
-            future = client.send(topic=topic, value=message.encode("utf-8"))
+            message = str(message).encode()
+            future = client.send(topic=topic, value=message)
             metadata = future.get(timeout=3)
         except KafkaError as Kerr:
             self.logger.exception("Kafka error occurred! - {}".format(Kerr))
@@ -136,8 +141,48 @@ class kafkafactory:
             self.logger.info("Exiting send message successfully")
             return metadata
 
-    def readmessage(self,messagetype,message):
-        pass
+    def readmessage(self,messagetype,consumergroup=None):
+        message = ""
+        try:
+            connectiondetails = self._resolvegetmessage(messagetype)
+            client = connectiondetails[0]
+            topic = connectiondetails[1]
+
+            return client._resolvegetmessage(messagetype)
+
+        except KafkaError as KError:
+            self.logger.exception("Kafka error occured! - {}".format(KError))
+        except Exception as err:
+            self.logger.exception(err)
+        finally:
+            return message
+
+
+    def _resolvegetmessage(self, messagetype):
+        messagedict = dict()
+
+
+        topic= self._gettopicbasedonmessagetype(messagetype)
+
+        consumer = KafkaConsumer(topic,
+                               bootstrap_servers=self._broker_list,
+                               api_version=tuple(self._version),
+                               client_id=self._client_id,
+                               request_timeout_ms = self._request_timeout_ms,
+                               max_partition_fetch_bytes=1000,
+                               auto_commit_interval_ms = 4000,
+                               auto_offset_reset='earliest',
+                               enable_auto_commit=False,
+                               )
+        for msg in consumer:
+            value = msg.value.decode()
+            timestamp = msg.timestamp
+            offset = msg.offset
+            messagedict[offset] = value
+            print(value)
+            consumer.commit()
+        return messagedict
+
 
     '''Resolves the Kafka SimpleClient internally based on messagetype passed. The second param also returns the topic name'''
     def _resovlesendmessagetype(self,messagetype):
@@ -146,6 +191,12 @@ class kafkafactory:
                                request_timeout_ms=self._request_timeout_ms,
                                acks=self._request_required_acks,
                                retries=self._message_send_max_retries)
+
+        topic = self._gettopicbasedonmessagetype(messagetype)
+
+        return [client, topic]
+
+    def _gettopicbasedonmessagetype(self,messagetype):
         if messagetype == self.MessageType.Test:
             topic = self._testtopic
         elif messagetype == self.MessageType.Product:
@@ -160,14 +211,12 @@ class kafkafactory:
             topic = self._ratingtopic
         elif messagetype == self.MessageType.Promotion:
             topic = self._promotopic
-
-        return [client, topic]
-
+        return topic
 
 
 
 if __name__ == "__main__":
     k = kafkafactory()
-    for i in range(1,2):
-        print(k.sendmessage(kafkafactory.MessageType.Test,"Hello Product!!!! {}".format(i)))
-
+    #for i in range(1,2):
+    #    print(k.sendmessage(kafkafactory.MessageType.Test,"Hello Product!!!! {}".format(i)))
+    k.readmessage(kafkafactory.MessageType.Test)

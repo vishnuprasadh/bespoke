@@ -33,7 +33,7 @@ class avroutility:
             elif domain.value == domainschema.ORDER.value:
                 schemaname = self.config.orderschemaname
 
-            schemafile =  os.path.join( os.path.dirname(__file__), schemaname)
+            schemafile =  os.path.join(os.path.dirname(__file__), schemaname)
 
             self.logger.info("Schema {} to load from {}".format(schemaname, schemafile))
 

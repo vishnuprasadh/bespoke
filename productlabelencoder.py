@@ -6,6 +6,10 @@ import numpy as np
 from collections import defaultdict
 from sklearn.feature_selection import SelectKBest
 from configuration import configuration
+import json
+from json import dumps
+from kafka import KafkaClient
+from kafkautility import kafkafactory
 
 '''
 This is an encoder for product which will encode the fields with labels where there are discrete variables.
@@ -39,15 +43,34 @@ class encoder(object):
 
 
     '''Pass the Dataframe input which will return the final LabelEncoded & normalized data'''
-    def getpreprocessandcleanupdata(self,dfinput=None):
+    def getpreprocessandcleanupdata(self,dfinput=None,stream=False):
 
         '''if not given'''
         if not dfinput:
-         dfinput = pd.read_csv('../DataSets/Sampleitem.csv', sep=",", header=0)
+            #dfinput = pd.read_csv('../DataSets/Sampleitem.csv', sep=",", header=0)
+            kf = kafkafactory()
+            kf.readmessage(kafkafactory.MessageType.Test)
+            # print(dfinput["style"].describe())
+            dfinput = self._returndata(dfinput)
+
+        if stream == True:
+            pass
+
+
+
+
+        dftrain = dfinput[1:12]
+        dftest = dfinput[13:]
+        print(dftrain)
+        print(dftest)
+
+
+
+        #print(dfinput["style"].describe())
 
         '''labelencode and send'''
-        return self._returndata(dfinput)
-
+        #return self._returndata(dfinput)
+        #return 0
 
     '''Just an aggregate function which calls the labelencoder, normalization functions and returns final dataframe'''
     def _returndata(self,dfinput):
@@ -63,7 +86,7 @@ class encoder(object):
 
         '''In each column loop through'''
         for k in df.columns:
-            print("Column name is {}".format(k))
+            #print("Column name is {}".format(k))
 
             '''Here am going through all feature columns where we have asked for encoding and encoding them'''
             if (str(k).lower() in self.feature_columns_toencode):
@@ -101,4 +124,4 @@ if __name__ == '__main__':
     '''# Test program'''
     e = encoder()
     df = e.getpreprocessandcleanupdata()
-    print(df.head())
+    #print(df.head())

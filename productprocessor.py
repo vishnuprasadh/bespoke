@@ -14,7 +14,7 @@ class productprocessor(object):
     def processdata(self,data):
         utility = avroutility()
         self._prodschema = utility.loadschema(domain=domainschema.PRODUCT)
-
+        print(self._prodschema)
 
 
         '''

@@ -50,7 +50,7 @@
 	"fields":
 		[
 		    {"name":"appId", "type":"int", "default":"1", "docs":"use appid to ensure the same instance can be rolled out to multiple products or applications"},
-		    {"name":"id", "type":"string" ,"aliases":["productid","itemid","item","product"]},
+		    {"name":"id", "type":"string" ,"aliases":["productid","itemid","item","product","skuid","sku","productcode"]},
 			{"name":"title","type":["null","string"]},
 			{"name":"brand","type":["null","string"],"docs":"brand can have a key and value"},
 			{"name":"categoryid","type": ["null", {"type":"map","values":"string"}], "aliases":["categoryid","catid"], "docs":"the list of categoryId, categoryName associated, send Id as key, name as value"},
