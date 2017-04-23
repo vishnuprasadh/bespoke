@@ -12,32 +12,11 @@ class productprocessor(object):
     _prodschema = 'product.avsc'
 
     def processdata(self,data):
+        #loads the schema of product using avroutility.
+        #TODO processing of the entire feed through KAFKA
         utility = avroutility()
         self._prodschema = utility.loadschema(domain=domainschema.PRODUCT)
         print(self._prodschema)
-
-
-        '''
-        print("Schema processed")
-        writer =  df.DataFileWriter(open(os.path.join(dirname,"products.json"),'wb'),
-                                         avio.DatumWriter(),proschema)
-        print("Just about to append the json")
-
-        date = str(datetime.time())
-        writer.append({ "id":"23232",
-                        "title":"Blue denim jeans",
-                        "description": "A blue rich denim jeans from the world of Kaya"
-                        })
-
-
-
-        reader = df.DataFileReader(open(os.path.join(dirname,"products.json"),'r'),avio.DatumReader(),proschema)
-
-        for product in reader:
-            print(product)
-        reader.close()
-        '''
-
 
 if __name__ == '__main__':
     pp = productprocessor()
